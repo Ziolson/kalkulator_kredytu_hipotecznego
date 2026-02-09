@@ -10,12 +10,25 @@ interface SmartInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value: number;
   onValueChange: (val: number) => void;
   label: string;
+  min?: number;
+  max?: number;
+  onValidationError?: (error: string) => void;
 }
 
-// Refined Input Component with Floating Label
-const SmartInput: React.FC<SmartInputProps> = ({ value, onValueChange, className, label, ...props }) => {
+// Refined Input Component with Floating Label and Validation
+const SmartInput: React.FC<SmartInputProps> = ({ 
+  value, 
+  onValueChange, 
+  className, 
+  label, 
+  min, 
+  max, 
+  onValidationError,
+  ...props 
+}) => {
   const [localValue, setLocalValue] = useState<string>(value.toString());
   const [isFocused, setIsFocused] = useState(false);
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     const currentNumeric = localValue === '' ? 0 : Number(localValue);
@@ -27,28 +40,78 @@ const SmartInput: React.FC<SmartInputProps> = ({ value, onValueChange, className
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setLocalValue(val);
+    
     if (val === '') {
       onValueChange(0);
-    } else {
-      const parsed = Number(val);
-      if (!isNaN(parsed)) onValueChange(parsed);
+      setError('');
+      return;
     }
+    
+    const parsed = Number(val);
+    
+    if (isNaN(parsed)) {
+      setError('Nieprawidłowa wartość');
+      onValidationError?.('Nieprawidłowa wartość');
+      return;
+    }
+    
+    if (min !== undefined && parsed < min) {
+      const errorMsg = `Minimalna wartość: ${min.toLocaleString('pl-PL')}`;
+      setError(errorMsg);
+      onValidationError?.(errorMsg);
+      // Still update the value to allow typing
+      onValueChange(parsed);
+      return;
+    }
+    
+    if (max !== undefined && parsed > max) {
+      const errorMsg = `Maksymalna wartość: ${max.toLocaleString('pl-PL')}`;
+      setError(errorMsg);
+      onValidationError?.(errorMsg);
+      // Still update the value to allow typing
+      onValueChange(parsed);
+      return;
+    }
+    
+    setError('');
+    onValueChange(parsed);
   };
 
+  const hasError = error !== '';
+  const borderColor = hasError 
+    ? 'border-red-300 ring-4 ring-red-500/10' 
+    : isFocused 
+      ? 'border-sky-500 ring-4 ring-sky-500/10 bg-white' 
+      : 'border-slate-200 bg-slate-50';
+
   return (
-    <div className={`relative transition-all duration-200 rounded-xl border ${isFocused ? 'border-sky-500 ring-4 ring-sky-500/10 bg-white' : 'border-slate-200 bg-slate-50'}`}>
-        <input
-            {...props}
-            value={localValue}
-            onChange={handleChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            className="block px-4 pb-2.5 pt-6 w-full text-lg font-bold text-slate-900 bg-transparent rounded-xl appearance-none focus:outline-none focus:ring-0 peer"
-            placeholder=" "
-        />
-        <label className="absolute text-sm font-semibold text-slate-500 duration-200 transform -translate-y-3 scale-75 top-4 left-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-slate-500 peer-focus:text-sky-600 peer-focus:scale-75 peer-focus:-translate-y-3">
-            {label}
-        </label>
+    <div>
+      <div className={`relative transition-all duration-200 rounded-xl border ${borderColor}`}>
+          <input
+              {...props}
+              value={localValue}
+              onChange={handleChange}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              className="block px-4 pb-2.5 pt-6 w-full text-lg font-bold text-slate-900 bg-transparent rounded-xl appearance-none focus:outline-none focus:ring-0 peer"
+              placeholder=" "
+              aria-invalid={hasError}
+              aria-describedby={hasError ? `${label}-error` : undefined}
+          />
+          <label className={`absolute text-sm font-semibold duration-200 transform -translate-y-3 scale-75 top-4 left-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-slate-500 peer-focus:scale-75 peer-focus:-translate-y-3 ${hasError ? 'text-red-600' : 'text-slate-500 peer-focus:text-sky-600'}`}>
+              {label}
+          </label>
+      </div>
+      {hasError && (
+        <p 
+          id={`${label}-error`}
+          className="text-xs text-red-600 mt-1.5 ml-1 flex items-center gap-1 animate-in fade-in slide-in-from-top-1 duration-200"
+          role="alert"
+        >
+          <span className="material-symbols-rounded text-sm">error</span>
+          {error}
+        </p>
+      )}
     </div>
   );
 };
@@ -187,6 +250,8 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
             value={inputs.loanAmount}
             onValueChange={(val) => handleChange('loanAmount', val)}
             label="Kwota Kredytu (PLN)"
+            min={10000}
+            max={10000000}
         />
 
         <StepperControl
@@ -199,6 +264,8 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
                 value={inputs.interestRate}
                 onValueChange={(val) => handleChange('interestRate', val)}
                 label="Oprocentowanie (%)"
+                min={0.1}
+                max={20}
             />
         </StepperControl>
 
@@ -212,6 +279,8 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
                     value={inputs.monthsRemaining}
                     onValueChange={(val) => handleChange('monthsRemaining', val)}
                     label="Pozostało rat"
+                    min={1}
+                    max={600}
                 />
             </StepperControl>
             <PresetOptions 
@@ -304,6 +373,8 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
                                                   onValueChange={(val) => handleChange('annexCost', val)}
                                                   label="Koszt (PLN)"
                                                   className="bg-white border-emerald-200 focus:ring-emerald-500/20 text-sm py-2"
+                                                  min={0}
+                                                  max={10000}
                                               />
                                               <p className="text-[10px] text-emerald-600/70 mt-1.5 ml-1">
                                                   Opłata za aneks przy skróceniu okresu.
@@ -328,6 +399,8 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
             onValueChange={(val) => handleChange('monthlyOverpayment', val)}
             label="Miesięczna Nadpłata (PLN)"
             className="bg-white border-transparent focus:ring-emerald-500/20"
+            min={0}
+            max={100000}
         />
         <PresetOptions 
           options={overpaymentPresets} 

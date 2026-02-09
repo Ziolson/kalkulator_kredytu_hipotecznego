@@ -5,9 +5,10 @@ import { BalanceChart, CostComparisonChart, YearlyStructureChart, PaymentBreakdo
 interface Props {
   results: CalculationResult;
   strategy: StrategyType;
+  calculationError?: string;
 }
 
-const ResultsDashboard: React.FC<Props> = ({ results, strategy }) => {
+const ResultsDashboard: React.FC<Props> = ({ results, strategy, calculationError }) => {
   const [activeTab, setActiveTab] = useState<'charts' | 'table'>('charts');
 
   // Calculate real savings
@@ -74,6 +75,21 @@ const ResultsDashboard: React.FC<Props> = ({ results, strategy }) => {
       });
       return Object.values(years);
   }, [results]);
+
+  // Show error message if validation failed
+  if (calculationError) {
+    return (
+      <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="bg-red-50 border-2 border-red-200 rounded-3xl p-8 text-center">
+          <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <span className="material-symbols-rounded text-4xl text-red-600">error</span>
+          </div>
+          <h3 className="text-lg font-bold text-red-900 mb-2">Nieprawidłowe dane</h3>
+          <p className="text-red-700">{calculationError}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">

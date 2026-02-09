@@ -33,9 +33,11 @@ const App: React.FC = () => {
     annexRequiredForShortening: true,
   });
 
+
   // Debounce the heavy calculation input to prevent chart jank while typing
   const calculatedInputs = useDebounce(inputs, 400);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [calculationError, setCalculationError] = useState<string>('');
 
   // Detect when inputs differ from calculated inputs to show loading state
   useEffect(() => {
@@ -46,7 +48,29 @@ const App: React.FC = () => {
     }
   }, [inputs, calculatedInputs]);
 
-  const results = useMemo(() => calculateMortgage(inputs), [inputs]);
+  const results = useMemo(() => {
+    try {
+      setCalculationError('');
+      return calculateMortgage(inputs);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Błąd obliczeń';
+      setCalculationError(message);
+      // Return safe default result to prevent crash
+      return {
+        monthlyData: [],
+        totalInterestStandard: 0,
+        totalInterestStrategy: 0,
+        totalMonthsStandard: 0,
+        totalMonthsStrategy: 0,
+        totalCostStandard: 0,
+        totalCostStrategy: 0,
+        firstInstallmentStandard: 0,
+        totalAnnexCost: 0,
+        totalPrincipalStandard: 0,
+        totalPrincipalStrategy: 0,
+      };
+    }
+}, [inputs]);
 
   return (
     <ErrorBoundary>
@@ -88,7 +112,7 @@ const App: React.FC = () => {
 
           {/* Right Column: Dashboard */}
           <div className="lg:col-span-8">
-             <ResultsDashboard results={results} strategy={inputs.strategy} />
+             <ResultsDashboard results={results} strategy={inputs.strategy} calculationError={calculationError} />
           </div>
 
         </div>

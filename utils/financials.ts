@@ -23,6 +23,23 @@ export const calculateMortgage = (inputs: InputState): CalculationResult => {
     annexRequiredForShortening
   } = inputs;
 
+  // Guard clauses: Validate inputs before calculations
+  if (loanAmount < 10000 || loanAmount > 10000000) {
+    throw new Error('Kwota kredytu musi być w zakresie 10 000 - 10 000 000 PLN');
+  }
+  if (interestRate < 0.1 || interestRate > 20) {
+    throw new Error('Oprocentowanie musi być w zakresie 0.1% - 20%');
+  }
+  if (monthsRemaining < 1 || monthsRemaining > 600) {
+    throw new Error('Liczba rat musi być w zakresie 1 - 600 miesięcy');
+  }
+  if (monthlyOverpayment < 0 || monthlyOverpayment > 100000) {
+    throw new Error('Nadpłata musi być w zakresie 0 - 100 000 PLN');
+  }
+  if (annexCost < 0 || annexCost > 10000) {
+    throw new Error('Koszt aneksu musi być w zakresie 0 - 10 000 PLN');
+  }
+
   const monthlyRate = interestRate / 100 / 12;
   const standardPMT = calculatePMT(loanAmount, interestRate, monthsRemaining);
   
