@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import InputSection from './components/InputSection';
 import ResultsDashboard from './components/ResultsDashboard';
 import ErrorBoundary from './components/ErrorBoundary';

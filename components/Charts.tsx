@@ -134,7 +134,7 @@ const ComparisonTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     return null;
   };
 
-export const BalanceChart: React.FC<Props> = ({ results }) => {
+const BalanceChart: React.FC<Props> = ({ results }) => {
   const chartData = results.monthlyData.filter((_, i) => i % 6 === 0 || i === results.monthlyData.length - 1);
 
   return (
@@ -193,7 +193,7 @@ export const BalanceChart: React.FC<Props> = ({ results }) => {
   );
 };
 
-export const PaymentBreakdownChart: React.FC<Props> = ({ results }) => {
+const PaymentBreakdownChart: React.FC<Props> = ({ results }) => {
     // Correct data preparation: Separate base principal from overpayment to avoid double counting
     const chartData = results.monthlyData
       .filter((d, i) => (i % 6 === 0 || i === results.monthlyData.length - 1) && d.paymentStrategy > 0)
@@ -251,7 +251,7 @@ export const PaymentBreakdownChart: React.FC<Props> = ({ results }) => {
     );
   };
 
-export const YearlyStructureChart: React.FC<Props> = ({ results }) => {
+const YearlyStructureChart: React.FC<Props> = ({ results }) => {
     const yearlyData = React.useMemo(() => {
         const years: Record<number, { year: number, interest: number, principal: number, overpayment: number }> = {};
         
@@ -298,7 +298,7 @@ export const YearlyStructureChart: React.FC<Props> = ({ results }) => {
       );
 };
 
-export const CostComparisonChart: React.FC<Props> = ({ results }) => {
+const CostComparisonChart: React.FC<Props> = ({ results }) => {
   const data = [
     {
       name: 'Standard',
@@ -341,4 +341,17 @@ export const CostComparisonChart: React.FC<Props> = ({ results }) => {
       </ResponsiveContainer>
     </div>
   );
+};
+
+// Export memoized versions to prevent unnecessary re-renders
+const BalanceChartMemo = React.memo(BalanceChart);
+const PaymentBreakdownChartMemo = React.memo(PaymentBreakdownChart);
+const YearlyStructureChartMemo = React.memo(YearlyStructureChart);
+const CostComparisonChartMemo = React.memo(CostComparisonChart);
+
+export { 
+  BalanceChartMemo as BalanceChart,
+  PaymentBreakdownChartMemo as PaymentBreakdownChart,
+  YearlyStructureChartMemo as YearlyStructureChart,
+  CostComparisonChartMemo as CostComparisonChart
 };

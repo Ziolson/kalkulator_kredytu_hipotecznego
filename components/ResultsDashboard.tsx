@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { CalculationResult, StrategyType } from '../types';
 import { BalanceChart, CostComparisonChart, YearlyStructureChart, PaymentBreakdownChart } from './Charts';
 
@@ -23,29 +23,29 @@ const ResultsDashboard: React.FC<Props> = ({ results, strategy, calculationError
   const yearsSaved = Math.floor(monthsSaved / 12);
   const remainingMonthsSaved = monthsSaved % 12;
 
-  const formatCurrency = (val: number) => 
-    new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN', maximumFractionDigits: 0 }).format(val);
+  const formatCurrency = useCallback((val: number) => 
+    new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN', maximumFractionDigits: 0 }).format(val), []);
 
-  const getFutureDate = (monthsToAdd: number) => {
+  const getFutureDate = useCallback((monthsToAdd: number) => {
     const date = new Date();
     date.setMonth(date.getMonth() + monthsToAdd);
     const month = date.toLocaleString('pl-PL', { month: 'long' });
     const year = date.getFullYear();
     return `${month.charAt(0).toUpperCase() + month.slice(1)} ${year}`;
-  };
+  }, []);
 
   const dateStandard = getFutureDate(results.totalMonthsStandard);
   const dateStrategy = getFutureDate(results.totalMonthsStrategy);
 
   // Helper for Polish pluralization (declension)
-  const getPolishForm = (count: number, forms: [string, string, string]) => {
+  const getPolishForm = useCallback((count: number, forms: [string, string, string]) => {
     if (count === 1) return forms[0]; // np. rok, miesiąc
     const rem10 = count % 10;
     const rem100 = count % 100;
     // 2, 3, 4 except 12, 13, 14
     if (rem10 >= 2 && rem10 <= 4 && !(rem100 >= 12 && rem100 <= 14)) return forms[1]; // np. lata, miesiące
     return forms[2]; // np. lat, miesięcy
-  };
+  }, []);
 
   const yearsString = yearsSaved > 0 
     ? `${yearsSaved} ${getPolishForm(yearsSaved, ['rok', 'lata', 'lat'])}` 
@@ -266,4 +266,4 @@ const ResultsDashboard: React.FC<Props> = ({ results, strategy, calculationError
   );
 };
 
-export default ResultsDashboard;
+export default React.memo(ResultsDashboard);

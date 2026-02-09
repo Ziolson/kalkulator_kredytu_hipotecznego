@@ -413,4 +413,4 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
   );
 };
 
-export default InputSection;
+export default React.memo(InputSection);
