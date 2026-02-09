@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import InputSection from './components/InputSection';
 import ResultsDashboard from './components/ResultsDashboard';
+import ErrorBoundary from './components/ErrorBoundary';
 import { calculateMortgage } from './utils/financials';
 import { InputState, StrategyType } from './types';
 
@@ -48,7 +49,8 @@ const App: React.FC = () => {
   const results = useMemo(() => calculateMortgage(inputs), [inputs]);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-800 pb-24 font-sans selection:bg-sky-100 selection:text-sky-900">
+    <ErrorBoundary>
+      <div className="min-h-screen bg-[#F8FAFC] text-slate-800 pb-24 font-sans selection:bg-sky-100 selection:text-sky-900">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-md border-b border-slate-200/60 sticky top-0 z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -103,6 +105,7 @@ const App: React.FC = () => {
         </button>
       </div>
     </div>
+    </ErrorBoundary>
   );
 };
 
