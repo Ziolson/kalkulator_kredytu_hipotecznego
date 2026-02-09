@@ -1,0 +1,49 @@
+# Zależności
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Pliki budowania
+dist/
+build/
+*.local
+
+# Logi
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# IDE - VSCode
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# IDE - JetBrains
+.idea/
+*.iml
+
+# IDE - inne
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Zmienne środowiskowe
+.env
+.env.local
+.env.production.local
+.env.development.local
+.env.test.local
+
+# Testy
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+.parcel-cache/
