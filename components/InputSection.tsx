@@ -346,11 +346,11 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
                             {/* Integrated Annex Configuration */}
                             {showAnnexConfig && (
                                 <div 
-                                  className="mt-4 pt-4 border-t border-emerald-50"
+                                  className="mt-4 pt-4 border-t border-emerald-50 dark:border-emerald-900/30"
                                   onClick={(e) => e.stopPropagation()} // Prevent triggering card selection when interacting with inputs
                                 >
                                     <div className="flex items-center justify-between mb-3">
-                                        <div className="flex items-center gap-1.5 text-emerald-800">
+                                        <div className="flex items-center gap-1.5 text-emerald-800 dark:text-emerald-300">
                                             <span className="material-symbols-rounded text-base">gavel</span>
                                             <span className="text-xs font-bold uppercase tracking-wide">Koszt aneksu</span>
                                         </div>
@@ -361,7 +361,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
                                                 onChange={(e) => handleChange('annexRequiredForShortening', e.target.checked)}
                                                 className="w-4 h-4 text-emerald-600 rounded border-emerald-300 focus:ring-emerald-500 cursor-pointer"
                                             />
-                                            <span className="text-xs font-semibold text-emerald-700">Wymagany</span>
+                                            <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">Wymagany</span>
                                         </label>
                                     </div>
                                     
@@ -376,7 +376,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
                                                   min={0}
                                                   max={10000}
                                               />
-                                              <p className="text-[10px] text-emerald-600/70 mt-1.5 ml-1">
+                                              <p className="text-[10px] text-emerald-600/70 dark:text-emerald-400/70 mt-1.5 ml-1">
                                                   Opłata za aneks przy skróceniu okresu.
                                               </p>
                                           </div>
