@@ -33,18 +33,18 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-8 max-w-md shadow-xl border border-slate-100 text-center">
-            <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <span className="material-symbols-rounded text-4xl text-red-600">error</span>
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 max-w-md shadow-xl border border-slate-100 dark:border-slate-700 text-center">
+            <div className="w-16 h-16 bg-red-100 dark:bg-red-900/40 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <span className="material-symbols-rounded text-4xl text-red-600 dark:text-red-400">error</span>
             </div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-2">Coś poszło nie tak</h2>
-            <p className="text-slate-600 mb-6">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Coś poszło nie tak</h2>
+            <p className="text-slate-600 dark:text-slate-400 mb-6">
               Przepraszamy, wystąpił nieoczekiwany błąd. Spróbuj odświeżyć stronę.
             </p>
             <button 
               onClick={() => window.location.reload()}
-              className="bg-slate-900 text-white px-6 py-3 rounded-xl font-semibold hover:bg-slate-800 transition-colors"
+              className="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-6 py-3 rounded-xl font-semibold hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors"
             >
               Odśwież stronę
             </button>

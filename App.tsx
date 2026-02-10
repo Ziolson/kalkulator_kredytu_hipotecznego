@@ -151,7 +151,7 @@ const App: React.FC = () => {
       {/* Floating CTA - Mobile Only mostly, but nice to have accessible */}
       <div className="fixed bottom-6 left-0 right-0 px-4 flex justify-center z-40 pointer-events-none" role="navigation" aria-label="Szybka nawigacja">
         <button 
-          className="pointer-events-auto bg-slate-900 hover:bg-slate-800 text-white font-medium py-3.5 px-6 rounded-full shadow-2xl shadow-slate-900/40 transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2 group backdrop-blur-sm focus:outline-none focus:ring-4 focus:ring-sky-500 focus:ring-offset-2"
+          className="pointer-events-auto bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 text-white dark:text-slate-900 font-medium py-3.5 px-6 rounded-full shadow-2xl shadow-slate-900/40 dark:shadow-slate-950/60 transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2 group backdrop-blur-sm focus:outline-none focus:ring-4 focus:ring-sky-500 focus:ring-offset-2"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           aria-label="Przewiń do góry strony i zmień parametry kredytu"
         >

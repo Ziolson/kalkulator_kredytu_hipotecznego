@@ -105,7 +105,7 @@ const SmartInput: React.FC<SmartInputProps> = ({
       {hasError && (
         <p 
           id={`${label}-error`}
-          className="text-xs text-red-600 mt-1.5 ml-1 flex items-center gap-1 animate-in fade-in slide-in-from-top-1 duration-200"
+          className="text-xs text-red-600 dark:text-red-400 mt-1.5 ml-1 flex items-center gap-1 animate-in fade-in slide-in-from-top-1 duration-200"
           role="alert"
         >
           <span className="material-symbols-rounded text-sm">error</span>
