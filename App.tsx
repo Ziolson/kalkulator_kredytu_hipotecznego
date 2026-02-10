@@ -1,79 +1,13 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React from 'react';
 import InputSection from './components/InputSection';
 import ResultsDashboard from './components/ResultsDashboard';
 import ErrorBoundary from './components/ErrorBoundary';
-import { calculateMortgage } from './utils/financials';
-import { InputState, StrategyType } from './types';
 import { useDarkMode } from './hooks/useDarkMode';
-
-// Custom hook for debouncing logic
-function useDebounce<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState(value);
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
-  return debouncedValue;
-}
+import { useMortgageCalculator } from './hooks/useMortgageCalculator';
 
 const App: React.FC = () => {
   const { theme, toggleTheme, isDark } = useDarkMode();
-  
-  const [inputs, setInputs] = useState<InputState>({
-    loanAmount: 400000,
-    interestRate: 7.5,
-    monthsRemaining: 300,
-    monthlyOverpayment: 1000,
-    strategy: StrategyType.SMART_SNOWBALL,
-    // Defaults for additional costs
-    insuranceMonthlyCost: 0,
-    insuranceDurationMonths: 36, // Default 3 years
-    annexCost: 200, // Typical bank fee
-    annexRequiredForShortening: true,
-  });
-
-
-  // Debounce the heavy calculation input to prevent chart jank while typing
-  const calculatedInputs = useDebounce(inputs, 400);
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [calculationError, setCalculationError] = useState<string>('');
-
-  // Detect when inputs differ from calculated inputs to show loading state
-  useEffect(() => {
-    if (inputs !== calculatedInputs) {
-      setIsCalculating(true);
-    } else {
-      setIsCalculating(false);
-    }
-  }, [inputs, calculatedInputs]);
-
-  const results = useMemo(() => {
-    try {
-      setCalculationError('');
-      return calculateMortgage(inputs);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Błąd obliczeń';
-      setCalculationError(message);
-      // Return safe default result to prevent crash
-      return {
-        monthlyData: [],
-        totalInterestStandard: 0,
-        totalInterestStrategy: 0,
-        totalMonthsStandard: 0,
-        totalMonthsStrategy: 0,
-        totalCostStandard: 0,
-        totalCostStrategy: 0,
-        firstInstallmentStandard: 0,
-        totalAnnexCost: 0,
-        totalPrincipalStandard: 0,
-        totalPrincipalStrategy: 0,
-      };
-    }
-}, [inputs]);
+  const { inputs, setInputs, results, isCalculating, calculationError } = useMortgageCalculator();
 
   return (
     <ErrorBoundary>

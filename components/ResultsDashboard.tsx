@@ -23,8 +23,11 @@ const ResultsDashboard: React.FC<Props> = ({ results, strategy, calculationError
   const yearsSaved = Math.floor(monthsSaved / 12);
   const remainingMonthsSaved = monthsSaved % 12;
 
+  // Memoize the formatter instance to avoid recreating it on every render
+  const currencyFormatter = useMemo(() => new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN', maximumFractionDigits: 0 }), []);
+
   const formatCurrency = useCallback((val: number) => 
-    new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN', maximumFractionDigits: 0 }).format(val), []);
+    currencyFormatter.format(val), [currencyFormatter]);
 
   const getFutureDate = useCallback((monthsToAdd: number) => {
     const date = new Date();

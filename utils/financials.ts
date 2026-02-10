@@ -1,4 +1,5 @@
 import { CalculationResult, InputState, MonthlyData, StrategyType } from '../types';
+import { MORTGAGE_LIMITS } from './constants';
 
 export const calculatePMT = (principal: number, annualRate: number, months: number): number => {
   if (months <= 0) return 0;
@@ -24,20 +25,20 @@ export const calculateMortgage = (inputs: InputState): CalculationResult => {
   } = inputs;
 
   // Guard clauses: Validate inputs before calculations
-  if (loanAmount < 10000 || loanAmount > 10000000) {
-    throw new Error('Kwota kredytu musi być w zakresie 10 000 - 10 000 000 PLN');
+  if (loanAmount < MORTGAGE_LIMITS.LOAN_AMOUNT.MIN || loanAmount > MORTGAGE_LIMITS.LOAN_AMOUNT.MAX) {
+    throw new Error(`Kwota kredytu musi być w zakresie ${MORTGAGE_LIMITS.LOAN_AMOUNT.MIN.toLocaleString('pl-PL')} - ${MORTGAGE_LIMITS.LOAN_AMOUNT.MAX.toLocaleString('pl-PL')} PLN`);
   }
-  if (interestRate < 0.1 || interestRate > 20) {
-    throw new Error('Oprocentowanie musi być w zakresie 0.1% - 20%');
+  if (interestRate < MORTGAGE_LIMITS.INTEREST_RATE.MIN || interestRate > MORTGAGE_LIMITS.INTEREST_RATE.MAX) {
+    throw new Error(`Oprocentowanie musi być w zakresie ${MORTGAGE_LIMITS.INTEREST_RATE.MIN}% - ${MORTGAGE_LIMITS.INTEREST_RATE.MAX}%`);
   }
-  if (monthsRemaining < 1 || monthsRemaining > 600) {
-    throw new Error('Liczba rat musi być w zakresie 1 - 600 miesięcy');
+  if (monthsRemaining < MORTGAGE_LIMITS.MONTHS_REMAINING.MIN || monthsRemaining > MORTGAGE_LIMITS.MONTHS_REMAINING.MAX) {
+    throw new Error(`Liczba rat musi być w zakresie ${MORTGAGE_LIMITS.MONTHS_REMAINING.MIN} - ${MORTGAGE_LIMITS.MONTHS_REMAINING.MAX} miesięcy`);
   }
-  if (monthlyOverpayment < 0 || monthlyOverpayment > 100000) {
-    throw new Error('Nadpłata musi być w zakresie 0 - 100 000 PLN');
+  if (monthlyOverpayment < MORTGAGE_LIMITS.MONTHLY_OVERPAYMENT.MIN || monthlyOverpayment > MORTGAGE_LIMITS.MONTHLY_OVERPAYMENT.MAX) {
+    throw new Error(`Nadpłata musi być w zakresie ${MORTGAGE_LIMITS.MONTHLY_OVERPAYMENT.MIN} - ${MORTGAGE_LIMITS.MONTHLY_OVERPAYMENT.MAX.toLocaleString('pl-PL')} PLN`);
   }
-  if (annexCost < 0 || annexCost > 10000) {
-    throw new Error('Koszt aneksu musi być w zakresie 0 - 10 000 PLN');
+  if (annexCost < MORTGAGE_LIMITS.ANNEX_COST.MIN || annexCost > MORTGAGE_LIMITS.ANNEX_COST.MAX) {
+    throw new Error(`Koszt aneksu musi być w zakresie ${MORTGAGE_LIMITS.ANNEX_COST.MIN} - ${MORTGAGE_LIMITS.ANNEX_COST.MAX.toLocaleString('pl-PL')} PLN`);
   }
 
   const monthlyRate = interestRate / 100 / 12;
