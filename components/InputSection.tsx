@@ -81,8 +81,8 @@ const SmartInput: React.FC<SmartInputProps> = ({
   const borderColor = hasError 
     ? 'border-red-300 ring-4 ring-red-500/10' 
     : isFocused 
-      ? 'border-sky-500 ring-4 ring-sky-500/10 bg-white' 
-      : 'border-slate-200 bg-slate-50';
+      ? 'border-sky-500 ring-4 ring-sky-500/10 dark:ring-sky-500/20 bg-white dark:bg-slate-900' 
+      : 'border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700';
 
   return (
     <div>
@@ -93,12 +93,12 @@ const SmartInput: React.FC<SmartInputProps> = ({
               onChange={handleChange}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              className="block px-4 pb-2.5 pt-6 w-full text-lg font-bold text-slate-900 bg-transparent rounded-xl appearance-none focus:outline-none focus:ring-0 peer"
+              className="block px-4 pb-2.5 pt-6 w-full text-lg font-bold text-slate-900 dark:text-slate-100 bg-transparent rounded-xl appearance-none focus:outline-none focus:ring-0 peer"
               placeholder=" "
               aria-invalid={hasError}
               aria-describedby={hasError ? `${label}-error` : undefined}
           />
-          <label className={`absolute text-sm font-semibold duration-200 transform -translate-y-3 scale-75 top-4 left-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-slate-500 peer-focus:scale-75 peer-focus:-translate-y-3 ${hasError ? 'text-red-600' : 'text-slate-500 peer-focus:text-sky-600'}`}>
+          <label className={`absolute text-sm font-semibold duration-200 transform -translate-y-3 scale-75 top-4 left-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-slate-500 dark:peer-placeholder-shown:text-slate-400 peer-focus:scale-75 peer-focus:-translate-y-3 ${hasError ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-400 peer-focus:text-sky-600 dark:peer-focus:text-sky-400'}`}>
               {label}
           </label>
       </div>
@@ -125,7 +125,7 @@ const StepperControl: React.FC<{
     <div className="flex items-center gap-1">
       <button 
         onClick={onDecrement}
-        className="w-10 h-[62px] flex items-center justify-center bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-slate-400 hover:text-slate-600 transition-all active:scale-95"
+        className="w-10 h-[62px] flex items-center justify-center bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all active:scale-95"
       >
         <span className="material-symbols-rounded">remove</span>
       </button>
@@ -136,7 +136,7 @@ const StepperControl: React.FC<{
 
       <button 
         onClick={onIncrement}
-        className="w-10 h-[62px] flex items-center justify-center bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-slate-400 hover:text-slate-600 transition-all active:scale-95"
+        className="w-10 h-[62px] flex items-center justify-center bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all active:scale-95"
       >
         <span className="material-symbols-rounded">add</span>
       </button>
@@ -158,8 +158,8 @@ const PresetOptions: React.FC<{
           onClick={() => onSelect(opt.value)}
           className={`text-[11px] px-3 py-1.5 rounded-lg font-semibold transition-all duration-200 border
             ${currentValue === opt.value 
-              ? 'bg-sky-50 text-sky-700 border-sky-200' 
-              : 'bg-transparent text-slate-400 border-transparent hover:bg-slate-100'
+              ? 'bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 border-sky-200 dark:border-sky-700' 
+              : 'bg-transparent text-slate-400 dark:text-slate-500 border-transparent hover:bg-slate-100 dark:hover:bg-slate-700'
             }`}
         >
           {opt.label}
@@ -233,14 +233,14 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
   ];
 
   return (
-    <div className="bg-white rounded-[2rem] p-6 lg:p-8 shadow-xl shadow-slate-200/60 border border-slate-100 flex flex-col gap-8 h-full">
+    <div className="bg-white dark:bg-slate-800 rounded-[2rem] p-6 lg:p-8 shadow-xl shadow-slate-200/60 dark:shadow-slate-950/60 border border-slate-100 dark:border-slate-700 flex flex-col gap-8 h-full transition-colors duration-300">
       <div className="flex items-center gap-3 pb-2">
         <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white shadow-lg shadow-slate-900/20">
            <span className="material-symbols-rounded">tune</span>
         </div>
         <div>
-          <h2 className="text-lg font-bold text-slate-900 leading-none mb-1">Parametry</h2>
-          <p className="text-xs text-slate-500 font-medium uppercase tracking-wide">Twoja sytuacja</p>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-none mb-1">Parametry</h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wide">Twoja sytuacja</p>
         </div>
       </div>
 
@@ -295,7 +295,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
 
       {/* Strategy Selector */}
       <div>
-        <label className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3 block px-1">Strategia nadpłacania</label>
+        <label className="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-wide mb-3 block px-1">Strategia nadpłacania</label>
         <div className="flex flex-col gap-3">
           {[StrategyType.SHORTEN_TERM, StrategyType.LOWER_INSTALLMENT, StrategyType.SMART_SNOWBALL].map((strat) => {
              const isSelected = inputs.strategy === strat;
@@ -309,8 +309,8 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
                     onClick={() => handleChange('strategy', strat)}
                     className={`relative rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden
                     ${isSelected 
-                        ? 'bg-white border-emerald-500 ring-1 ring-emerald-500 shadow-lg scale-[1.02] z-10' 
-                        : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50'}`}
+                        ? 'bg-white dark:bg-slate-700 border-emerald-500 dark:border-emerald-400 ring-1 ring-emerald-500 dark:ring-emerald-400 shadow-lg scale-[1.02] z-10' 
+                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700/50'}`}
                 >
                     {/* Header Part */}
                     <div className="p-4 flex items-start gap-4">
@@ -319,7 +319,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
                         </div>
                         <div className="flex-1">
                             <div className="flex flex-wrap justify-between items-center mb-0.5 gap-2">
-                                <div className={`text-sm font-bold ${isSelected ? 'text-slate-900' : 'text-slate-600'}`}>
+                                <div className={`text-sm font-bold ${isSelected ? 'text-slate-900 dark:text-slate-100' : 'text-slate-600 dark:text-slate-300'}`}>
                                     {info.title}
                                 </div>
                                 {isSelected && (
@@ -328,7 +328,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
                                     </span>
                                 )}
                             </div>
-                            <div className={`text-xs ${isSelected ? 'text-slate-500' : 'text-slate-400'}`}>
+                            <div className={`text-xs ${isSelected ? 'text-slate-500 dark:text-slate-400' : 'text-slate-400 dark:text-slate-500'}`}>
                                 {info.shortDesc}
                             </div>
                         </div>
@@ -339,7 +339,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
                         className={`overflow-hidden transition-all duration-500 ease-in-out ${isSelected ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
                     >
                         <div className="px-4 pb-4 pt-0 pl-[3.5rem]">
-                            <p className="text-xs leading-relaxed text-slate-600 border-l-2 border-emerald-100 pl-3">
+                            <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400 border-l-2 border-emerald-100 dark:border-emerald-800 pl-3">
                                 {info.fullDesc}
                             </p>
 
@@ -392,7 +392,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
       </div>
 
       {/* Overpayment Amount */}
-      <div className="bg-emerald-50/50 p-1 rounded-2xl border border-emerald-100">
+      <div className="bg-emerald-50/50 dark:bg-emerald-950/20 p-1 rounded-2xl border border-emerald-100 dark:border-emerald-900/30">
         <SmartInput
             type="number"
             value={inputs.monthlyOverpayment}

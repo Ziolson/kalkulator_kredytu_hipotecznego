@@ -124,7 +124,7 @@ const ResultsDashboard: React.FC<Props> = ({ results, strategy, calculationError
           </div>
 
           {/* Financial Freedom Card */}
-          <div className="md:col-span-3 bg-white rounded-3xl p-6 border border-slate-100 shadow-lg shadow-slate-200/50 flex flex-col justify-between relative overflow-hidden">
+          <div className="md:col-span-3 bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-100 dark:border-slate-700 shadow-lg shadow-slate-200/50 dark:shadow-slate-950/50 flex flex-col justify-between relative overflow-hidden transition-colors duration-300">
              {/* Decorative blob */}
              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50/50 rounded-full blur-3xl -mr-6 -mt-6 pointer-events-none opacity-50"></div>
              
@@ -134,18 +134,18 @@ const ResultsDashboard: React.FC<Props> = ({ results, strategy, calculationError
                      <div className="w-10 h-10 bg-emerald-100 text-emerald-800 rounded-2xl flex items-center justify-center shrink-0">
                          <span className="material-symbols-rounded text-xl">event_available</span>
                      </div>
-                     <span className="text-slate-900 font-bold text-xs uppercase tracking-wider">
+                     <span className="text-slate-900 dark:text-slate-100 font-bold text-xs uppercase tracking-wider">
                         Wolność finansowa
                      </span>
                  </div>
 
                  {/* Dates - Reduced size slightly to prevent height blowup */}
                  <div>
-                    <h3 className="text-slate-900 font-bold text-3xl leading-tight mb-0.5">
+                    <h3 className="text-slate-900 dark:text-slate-100 font-bold text-3xl leading-tight mb-0.5">
                         {dateStrategy}
                     </h3>
                     {monthsSaved > 0 && (
-                        <p className="text-slate-400 font-medium text-sm line-through decoration-slate-300 decoration-2">
+                        <p className="text-slate-400 dark:text-slate-500 font-medium text-sm line-through decoration-slate-300 dark:decoration-slate-600 decoration-2">
                             {dateStandard}
                         </p>
                     )}
@@ -153,11 +153,11 @@ const ResultsDashboard: React.FC<Props> = ({ results, strategy, calculationError
              </div>
 
              {/* Footer - Reduced margin */}
-             <div className="relative z-10 mt-4 pt-4 border-t border-slate-50 flex items-center gap-2">
-                <span className={`material-symbols-rounded text-xl ${monthsSaved > 0 ? 'text-emerald-500' : 'text-slate-400'}`}>
+             <div className="relative z-10 mt-4 pt-4 border-t border-slate-50 dark:border-slate-700 flex items-center gap-2">
+                <span className={`material-symbols-rounded text-xl ${monthsSaved > 0 ? 'text-emerald-500 dark:text-emerald-400' : 'text-slate-400 dark:text-slate-500'}`}>
                     {monthsSaved > 0 ? 'history_toggle_off' : 'event'}
                 </span>
-                <span className={`font-bold text-sm whitespace-nowrap ${monthsSaved > 0 ? 'text-emerald-700' : 'text-slate-500'}`}>
+                <span className={`font-bold text-sm whitespace-nowrap ${monthsSaved > 0 ? 'text-emerald-700 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400'}`}>
                     {monthsSaved > 0 ? `Szybciej o ${savedTimeText}` : 'Standardowy okres spłaty'}
                 </span>
              </div>
@@ -165,19 +165,19 @@ const ResultsDashboard: React.FC<Props> = ({ results, strategy, calculationError
       </div>
 
       {/* Content Tabs */}
-      <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/40 border border-slate-100 overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-[2rem] shadow-xl shadow-slate-200/40 dark:shadow-slate-950/40 border border-slate-100 dark:border-slate-700 overflow-hidden transition-colors duration-300">
           {/* Tab Navigation */}
-          <div className="flex border-b border-slate-100">
+          <div className="flex border-b border-slate-100 dark:border-slate-700">
               <button 
                 onClick={() => setActiveTab('charts')}
-                className={`flex-1 py-4 text-sm font-bold text-center transition-colors relative ${activeTab === 'charts' ? 'text-slate-800' : 'text-slate-400 hover:text-slate-600'}`}
+                className={`flex-1 py-4 text-sm font-bold text-center transition-colors relative ${activeTab === 'charts' ? 'text-slate-800 dark:text-slate-100' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
               >
                   Wizualizacja
                   {activeTab === 'charts' && <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-emerald-500 rounded-t-full"></div>}
               </button>
               <button 
                 onClick={() => setActiveTab('table')}
-                className={`flex-1 py-4 text-sm font-bold text-center transition-colors relative ${activeTab === 'table' ? 'text-slate-800' : 'text-slate-400 hover:text-slate-600'}`}
+                className={`flex-1 py-4 text-sm font-bold text-center transition-colors relative ${activeTab === 'table' ? 'text-slate-800 dark:text-slate-100' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
               >
                   Harmonogram roczny
                   {activeTab === 'table' && <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-1 bg-emerald-500 rounded-t-full"></div>}
@@ -212,8 +212,8 @@ const ResultsDashboard: React.FC<Props> = ({ results, strategy, calculationError
                              <YearlyStructureChart results={results} strategy={strategy} />
                         </div>
                         <div>
-                             <h3 className="text-lg font-bold text-slate-800 mb-2">Porównanie kosztów</h3>
-                             <p className="text-sm text-slate-500 mb-6">Całkowita kwota do oddania bankowi.</p>
+                             <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Porównanie kosztów</h3>
+                             <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Całkowita kwota do oddania bankowi.</p>
                              <CostComparisonChart results={results} strategy={strategy} />
                         </div>
                      </div>
@@ -222,7 +222,7 @@ const ResultsDashboard: React.FC<Props> = ({ results, strategy, calculationError
                 <div className="animate-in fade-in duration-300">
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left">
-                            <thead className="text-xs text-slate-500 uppercase bg-slate-50/50 border-b border-slate-100">
+                            <thead className="text-xs text-slate-500 dark:text-slate-400 uppercase bg-slate-50/50 dark:bg-slate-700/50 border-b border-slate-100 dark:border-slate-700">
                                 <tr>
                                     <th className="px-4 py-3 font-semibold rounded-tl-lg">Rok</th>
                                     <th className="px-4 py-3 font-semibold text-right">Wpłacono łącznie</th>
@@ -231,24 +231,24 @@ const ResultsDashboard: React.FC<Props> = ({ results, strategy, calculationError
                                     <th className="px-4 py-3 font-semibold text-right rounded-tr-lg">Saldo końcowe</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-100">
+                            <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
                                 {yearlySchedule.map((row) => (
-                                    <tr key={row.year} className="hover:bg-slate-50 transition-colors">
-                                        <td className="px-4 py-3 font-bold text-slate-700">{row.year}</td>
-                                        <td className="px-4 py-3 text-right font-medium text-slate-600">{formatCurrency(row.totalPaid)}</td>
-                                        <td className="px-4 py-3 text-right font-medium text-red-500">{formatCurrency(row.interestPaid)}</td>
-                                        <td className="px-4 py-3 text-right font-medium text-blue-600">{formatCurrency(row.principalPaid)}</td>
-                                        <td className="px-4 py-3 text-right font-bold text-slate-800">{formatCurrency(row.balanceEnd)}</td>
+                                    <tr key={row.year} className="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+                                        <td className="px-4 py-3 font-bold text-slate-700 dark:text-slate-300">{row.year}</td>
+                                        <td className="px-4 py-3 text-right font-medium text-slate-600 dark:text-slate-400">{formatCurrency(row.totalPaid)}</td>
+                                        <td className="px-4 py-3 text-right font-medium text-red-500 dark:text-red-400">{formatCurrency(row.interestPaid)}</td>
+                                        <td className="px-4 py-3 text-right font-medium text-blue-600 dark:text-blue-400">{formatCurrency(row.principalPaid)}</td>
+                                        <td className="px-4 py-3 text-right font-bold text-slate-800 dark:text-slate-200">{formatCurrency(row.balanceEnd)}</td>
                                     </tr>
                                 ))}
                             </tbody>
-                            <tfoot className="bg-slate-50 border-t border-slate-200">
+                            <tfoot className="bg-slate-50 dark:bg-slate-700/50 border-t border-slate-200 dark:border-slate-700">
                                 <tr>
-                                    <td className="px-4 py-3 font-bold text-slate-800">SUMA</td>
-                                    <td className="px-4 py-3 text-right font-bold text-slate-800">{formatCurrency(results.totalCostStrategy)}</td>
-                                    <td className="px-4 py-3 text-right font-bold text-red-600">{formatCurrency(results.totalInterestStrategy)}</td>
-                                    <td className="px-4 py-3 text-right font-bold text-blue-700">{formatCurrency(results.totalPrincipalStrategy)}</td>
-                                    <td className="px-4 py-3 text-right text-slate-400">-</td>
+                                    <td className="px-4 py-3 font-bold text-slate-800 dark:text-slate-100">SUMA</td>
+                                    <td className="px-4 py-3 text-right font-bold text-slate-800 dark:text-slate-100">{formatCurrency(results.totalCostStrategy)}</td>
+                                    <td className="px-4 py-3 text-right font-bold text-red-600 dark:text-red-400">{formatCurrency(results.totalInterestStrategy)}</td>
+                                    <td className="px-4 py-3 text-right font-bold text-blue-700 dark:text-blue-400">{formatCurrency(results.totalPrincipalStrategy)}</td>
+                                    <td className="px-4 py-3 text-right text-slate-400 dark:text-slate-500">-</td>
                                 </tr>
                             </tfoot>
                         </table>

@@ -4,6 +4,7 @@ import ResultsDashboard from './components/ResultsDashboard';
 import ErrorBoundary from './components/ErrorBoundary';
 import { calculateMortgage } from './utils/financials';
 import { InputState, StrategyType } from './types';
+import { useDarkMode } from './hooks/useDarkMode';
 
 // Custom hook for debouncing logic
 function useDebounce<T>(value: T, delay: number): T {
@@ -20,6 +21,8 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 
 const App: React.FC = () => {
+  const { theme, toggleTheme, isDark } = useDarkMode();
+  
   const [inputs, setInputs] = useState<InputState>({
     loanAmount: 400000,
     interestRate: 7.5,
@@ -74,7 +77,7 @@ const App: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-[#F8FAFC] text-slate-800 pb-24 font-sans selection:bg-sky-100 selection:text-sky-900">
+      <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-900 text-slate-800 dark:text-slate-100 pb-24 font-sans selection:bg-sky-100 selection:text-sky-900 dark:selection:bg-sky-900 dark:selection:text-sky-100 transition-colors duration-300">
       
       {/* Skip to main content link for keyboard users */}
       <a 
@@ -85,24 +88,40 @@ const App: React.FC = () => {
       </a>
       
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-md border-b border-slate-200/60 sticky top-0 z-50 transition-all duration-300" role="banner">
+      <header className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-700/60 sticky top-0 z-50 transition-all duration-300" role="banner">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-gradient-to-br from-sky-800 to-sky-900 rounded-xl shadow-lg shadow-sky-900/20 flex items-center justify-center text-white" aria-hidden="true">
               <span className="material-symbols-rounded text-xl">account_balance</span>
             </div>
             <div>
-              <h1 className="text-lg font-bold text-slate-900 leading-tight hidden sm:block">Kalkulator Nadpłat Kredytu Hipotecznego</h1>
-              <h1 className="text-lg font-bold text-slate-900 leading-tight sm:hidden">Nadpłaty</h1>
-              <p className="text-[10px] font-medium text-slate-500 uppercase tracking-wider hidden sm:block" aria-label="Podtytuł aplikacji">Symulacja Kredytu Hipotecznego</p>
+              <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-tight hidden sm:block">Kalkulator Nadpłat Kredytu Hipotecznego</h1>
+              <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100 leading-tight sm:hidden">Nadpłaty</h1>
+              <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider hidden sm:block" aria-label="Podtytuł aplikacji">Symulacja Kredytu Hipotecznego</p>
             </div>
           </div>
-          {isCalculating && (
-             <div className="flex items-center gap-2 text-xs font-semibold text-sky-600 bg-sky-50 px-3 py-1.5 rounded-full animate-pulse" role="status" aria-live="polite">
-                <span className="material-symbols-rounded text-sm animate-spin" aria-hidden="true">sync</span>
-                <span>Przeliczam...</span>
-             </div>
-          )}
+          <div className="flex items-center gap-3">
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800"
+              aria-label={isDark ? 'Przełącz na tryb jasny' : 'Przełącz na tryb ciemny'}
+              title={isDark ? 'Tryb jasny' : 'Tryb ciemny'}
+            >
+              {isDark ? (
+                <span className="material-symbols-rounded text-xl text-yellow-400">light_mode</span>
+              ) : (
+                <span className="material-symbols-rounded text-xl text-slate-700">dark_mode</span>
+              )}
+            </button>
+            
+            {isCalculating && (
+               <div className="flex items-center gap-2 text-xs font-semibold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/50 px-3 py-1.5 rounded-full animate-pulse" role="status" aria-live="polite">
+                  <span className="material-symbols-rounded text-sm animate-spin" aria-hidden="true">sync</span>
+                  <span>Przeliczam...</span>
+               </div>
+            )}
+          </div>
         </div>
       </header>
 

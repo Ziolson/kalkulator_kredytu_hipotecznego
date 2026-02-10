@@ -40,17 +40,17 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
         new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN', maximumFractionDigits: 0 }).format(val);
 
     return (
-      <div className="bg-white p-4 border border-slate-100 shadow-xl rounded-xl text-sm z-50 font-sans">
-        <p className="font-bold text-slate-800 mb-2 border-b border-slate-100 pb-2">{`Miesiąc ${label}`}</p>
+      <div className="bg-white dark:bg-slate-800 p-4 border border-slate-100 dark:border-slate-700 shadow-xl rounded-xl text-sm z-50 font-sans">
+        <p className="font-bold text-slate-800 dark:text-slate-100 mb-2 border-b border-slate-100 dark:border-slate-700 pb-2">{`Miesiąc ${label}`}</p>
         
         <div className="space-y-2">
           <div className="flex justify-between gap-6 items-center">
-             <span className="text-slate-500 text-xs font-semibold uppercase">Saldo Standard</span>
-             <span className="font-mono font-medium text-slate-700">{formatMoney(data.balanceStandard)}</span>
+             <span className="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase">Saldo Standard</span>
+             <span className="font-mono font-medium text-slate-700 dark:text-slate-300">{formatMoney(data.balanceStandard)}</span>
           </div>
           <div className="flex justify-between gap-6 items-center">
-             <span className="text-emerald-600 text-xs font-semibold uppercase">Saldo z Nadpłatą</span>
-             <span className="font-mono font-bold text-emerald-700">{formatMoney(data.balanceStrategy)}</span>
+             <span className="text-emerald-600 dark:text-emerald-400 text-xs font-semibold uppercase">Saldo z Nadpłatą</span>
+             <span className="font-mono font-bold text-emerald-700 dark:text-emerald-400">{formatMoney(data.balanceStrategy)}</span>
           </div>
         </div>
       </div>
@@ -67,18 +67,18 @@ const PaymentTooltip = ({ active, payload, label }: CustomTooltipProps) => {
       const total = payload.reduce((acc, entry) => acc + (entry.value || 0), 0);
 
       return (
-        <div className="bg-white p-3 border border-slate-100 shadow-xl rounded-xl text-xs z-50 font-sans">
-          <p className="font-bold text-slate-800 mb-2">{`Miesiąc ${label}`}</p>
+        <div className="bg-white dark:bg-slate-800 p-3 border border-slate-100 dark:border-slate-700 shadow-xl rounded-xl text-xs z-50 font-sans">
+          <p className="font-bold text-slate-800 dark:text-slate-100 mb-2">{`Miesiąc ${label}`}</p>
           {payload.map((entry: any, index: number) => (
             <div key={index} className="flex justify-between gap-4 mb-1 items-center">
                <div className="flex items-center gap-1">
                   <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }}></div>
-                  <span className="text-slate-500">{entry.name}:</span>
+                  <span className="text-slate-500 dark:text-slate-400">{entry.name}:</span>
                </div>
-               <span className="font-medium font-mono">{formatMoney(entry.value)}</span>
+               <span className="font-medium font-mono text-slate-800 dark:text-slate-200">{formatMoney(entry.value)}</span>
             </div>
           ))}
-          <div className="mt-2 pt-2 border-t border-slate-100 flex justify-between gap-4 items-center font-bold text-slate-800">
+          <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-700 flex justify-between gap-4 items-center font-bold text-slate-800 dark:text-slate-100">
              <span>Łącznie:</span>
              <span>{formatMoney(total)}</span>
           </div>
@@ -94,15 +94,15 @@ const YearlyTooltip = ({ active, payload, label }: CustomTooltipProps) => {
         new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN', maximumFractionDigits: 0 }).format(val);
 
     return (
-      <div className="bg-white p-3 border border-slate-100 shadow-xl rounded-xl text-xs z-50 font-sans">
-        <p className="font-bold text-slate-800 mb-2">{`Rok ${label}`}</p>
+      <div className="bg-white dark:bg-slate-800 p-3 border border-slate-100 dark:border-slate-700 shadow-xl rounded-xl text-xs z-50 font-sans">
+        <p className="font-bold text-slate-800 dark:text-slate-100 mb-2">{`Rok ${label}`}</p>
         {payload.map((entry: any, index: number) => (
           <div key={index} className="flex justify-between gap-4 mb-1 items-center">
              <div className="flex items-center gap-1">
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }}></div>
-                <span className="text-slate-500">{entry.name}:</span>
+                <span className="text-slate-500 dark:text-slate-400">{entry.name}:</span>
              </div>
-             <span className="font-medium font-mono">{formatMoney(entry.value)}</span>
+             <span className="font-medium font-mono text-slate-800 dark:text-slate-200">{formatMoney(entry.value)}</span>
           </div>
         ))}
       </div>
@@ -117,15 +117,15 @@ const ComparisonTooltip = ({ active, payload, label }: CustomTooltipProps) => {
           new Intl.NumberFormat('pl-PL', { style: 'currency', currency: 'PLN', maximumFractionDigits: 0 }).format(val);
   
       return (
-        <div className="bg-white p-3 border border-slate-100 shadow-xl rounded-xl text-xs z-50 font-sans">
-          <p className="font-bold text-slate-800 mb-2">{label}</p>
+        <div className="bg-white dark:bg-slate-800 p-3 border border-slate-100 dark:border-slate-700 shadow-xl rounded-xl text-xs z-50 font-sans">
+          <p className="font-bold text-slate-800 dark:text-slate-100 mb-2">{label}</p>
           {payload.map((entry: any, index: number) => (
             <div key={index} className="flex justify-between gap-4 mb-1 items-center">
                <div className="flex items-center gap-1">
                   <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }}></div>
-                  <span className="text-slate-500">{entry.name}:</span>
+                  <span className="text-slate-500 dark:text-slate-400">{entry.name}:</span>
                </div>
-               <span className="font-medium font-mono">{formatMoney(entry.value)}</span>
+               <span className="font-medium font-mono text-slate-800 dark:text-slate-200">{formatMoney(entry.value)}</span>
             </div>
           ))}
         </div>
@@ -287,7 +287,7 @@ const YearlyStructureChart: React.FC<Props> = ({ results }) => {
                 axisLine={false}
                 tickLine={false}
               />
-              <Tooltip content={<YearlyTooltip />} cursor={{fill: '#f8fafc'}} />
+              <Tooltip content={<YearlyTooltip />} cursor={{fill: 'rgba(100, 116, 139, 0.1)'}} />
               <Legend iconType="circle" verticalAlign="top" height={36} wrapperStyle={{ fontSize: '12px', fontWeight: 500 }} />
               <Bar dataKey="principal" name="Kapitał" stackId="a" fill="#3b82f6" radius={[0, 0, 4, 4]} />
               <Bar dataKey="interest" name="Odsetki" stackId="a" fill="#ef4444" radius={[0, 0, 0, 0]} />
@@ -332,7 +332,7 @@ const CostComparisonChart: React.FC<Props> = ({ results }) => {
             axisLine={false}
             tickLine={false}
           />
-          <Tooltip content={<ComparisonTooltip />} cursor={{fill: '#f8fafc'}} />
+          <Tooltip content={<ComparisonTooltip />} cursor={{fill: 'rgba(100, 116, 139, 0.1)'}} />
           <Legend iconType="circle" verticalAlign="top" height={36} wrapperStyle={{ fontSize: '12px', fontWeight: 500 }} />
           <Bar dataKey="principal" name="Kapitał" stackId="a" fill="#cbd5e1" />
           <Bar dataKey="interest" name="Odsetki" stackId="a" fill="#ef4444" />
