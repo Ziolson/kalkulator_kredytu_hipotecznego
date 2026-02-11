@@ -1,80 +1,59 @@
 # Kalkulator Nadpłat Kredytu Hipotecznego
 
-Aplikacja do symulacji nadpłat kredytu hipotecznego i obliczania oszczędności odsetkowych.
+Aplikacja typu Progressive Web App (PWA) służąca do symulacji nadpłat kredytu hipotecznego, dostępna pod adresem [nadplatahipoteki.pl](https://nadplatahipoteki.pl).
 
 ## Funkcjonalności
 
-- Symulacja wpływu nadpłat na długość kredytu i koszty odsetkowe
-- Wykresy przedstawiające:
-  - Podział rat na kapitał i odsetki
-  - Porównanie oszczędności przy różnych strategiach nadpłat
-  - Wizualizacja ścieżki spłaty
-- Konfiguracja parametrów:
-  - Kwota kredytu i oprocentowanie
-  - Okres spłaty
-  - Wysokość i częstotliwość nadpłat
-- Dashboard z wynikami obliczeń
+### Symulacje Finansowe
 
-## Technologie
+- Obliczanie wpływu nadpłat na całkowity koszt kredytu.
+- Porównanie strategii spłaty: skrócenie okresu kredytowania vs. obniżenie raty miesięcznej.
+- Generowanie harmonogramu spłaty z uwzględnieniem nadpłat.
 
-- React + TypeScript
-- Vite
-- Recharts
-- CSS Modules
+### Progressive Web App (PWA)
 
-## Wymagania
+- Aplikacja jest instalowalna na urządzeniach desktopowych i mobilnych.
+- Obsługa trybu offline przy użyciu Service Workera i strategii cache'owania.
+- Zgodność ze standardem PWA (manifest, ikony, service worker).
 
-- Node.js w wersji 16 lub nowszej
-- npm lub yarn
+### Wizualizacja Danych
 
-## Instalacja
+- Wykresy liniowe i słupkowe prezentujące strukturę spłaty kapitału i odsetek.
+- Porównawcza wizualizacja kosztów całkowitych dla różnych scenariuszy.
+
+## Stack Technologiczny
+
+- **Frontend**: React 19, TypeScript
+- **Build Tool**: Vite
+- **PWA**: vite-plugin-pwa, Workbox
+- **Styling**: TailwindCSS
+- **Wykresy**: Recharts
+
+## Instalacja i Uruchomienie
+
+Wymagane środowisko Node.js (v16+).
 
 ```bash
-# Sklonuj repozytorium
-git clone <url-repozytorium>
-cd kalkulator_kredytu_hipotecznego
-
-# Zainstaluj zależności
+# Instalacja zależności
 npm install
 
-# Uruchom serwer deweloperski
+# Uruchomienie serwera deweloperskiego
 npm run dev
 
-# Zbuduj wersję produkcyjną
+# Budowanie wersji produkcyjnej
 npm run build
+
+# Podgląd wersji produkcyjnej (testowanie PWA)
+npm run preview
 ```
 
-## Struktura projektu
+## Struktura Projektu
 
-```
-kalkulator_kredytu_hipotecznego/
-├── components/           # Komponenty React
-│   ├── Charts.tsx       # Komponenty wykresów
-│   ├── InputSection.tsx # Formularz parametrów kredytu
-│   └── ResultsDashboard.tsx # Dashboard wyników
-├── utils/               # Funkcje pomocnicze
-│   └── financials.ts    # Obliczenia finansowe
-├── App.tsx              # Główny komponent aplikacji
-├── index.tsx            # Entry point
-├── types.ts             # Definicje typów TypeScript
-├── index.html           # Szablon HTML
-├── vite.config.ts       # Konfiguracja Vite
-├── tsconfig.json        # Konfiguracja TypeScript
-└── package.json         # Zależności projektu
-```
-
-## Użycie
-
-1. Wprowadź parametry kredytu (kwota, oprocentowanie, okres)
-2. Ustaw kwotę nadpłaty miesięcznej
-3. Aplikacja wyświetli:
-   - Oszczędności na odsetkach
-   - Skrócenie okresu spłaty
-   - Wykresy spłaty
-
-## Rozwój
-
-Logika obliczeń znajduje się w `utils/financials.ts`.
+- `src/components/` - Komponenty interfejsu użytkownika.
+- `src/hooks/` - Logika biznesowa i stan aplikacji (Custom Hooks).
+- `src/utils/` - Funkcje pomocnicze i algorytmy finansowe.
+- `public/` - Zasoby statyczne, manifest PWA, ikony.
+- `dist/` - Katalog wyjściowy procesu budowania.
 
 ## Licencja
 
