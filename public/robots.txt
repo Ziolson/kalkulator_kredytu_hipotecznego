@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kalkulator-nadplat.pl/sitemap.xml
+Sitemap: https://nadplatahipoteki.pl/sitemap.xml

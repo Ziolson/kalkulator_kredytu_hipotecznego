@@ -1,0 +1,27 @@
+{
+  "name": "Kalkulator Nadpłat Kredytu Hipotecznego",
+  "short_name": "Nadpłata Hipoteki",
+  "description": "Oblicz ile zaoszczędzisz na nadpłatach kredytu hipotecznego. Symuluj różne strategie spłaty kredytu.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c4a6e",
+  "theme_color": "#0c4a6e",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "lang": "pl",
+  "dir": "ltr",
+  "orientation": "portrait-primary",
+  "categories": ["finance", "business", "productivity"]
+}
