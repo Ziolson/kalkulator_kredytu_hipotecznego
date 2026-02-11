@@ -23,6 +23,10 @@ lerna-debug.log*
 !.vscode/extensions.json
 !.vscode/settings.json
 
+# PWA testing
+dev-dist
+public/sw.js
+public/workbox-*.js
 # IDE - JetBrains
 .idea/
 *.iml
