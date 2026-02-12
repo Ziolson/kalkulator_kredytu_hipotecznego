@@ -2,6 +2,7 @@ import React from 'react';
 import InputSection from './components/InputSection';
 import ResultsDashboard from './components/ResultsDashboard';
 import ErrorBoundary from './components/ErrorBoundary';
+import Footer from './components/Footer';
 import { useDarkMode } from './hooks/useDarkMode';
 import { useMortgageCalculator } from './hooks/useMortgageCalculator';
 
@@ -11,7 +12,7 @@ const App: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-900 text-slate-800 dark:text-slate-100 pb-24 font-sans selection:bg-sky-100 selection:text-sky-900 dark:selection:bg-sky-900 dark:selection:text-sky-100 transition-colors duration-300">
+      <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-900 text-slate-800 dark:text-slate-100 flex flex-col font-sans selection:bg-sky-100 selection:text-sky-900 dark:selection:bg-sky-900 dark:selection:text-sky-100 transition-colors duration-300">
       
       {/* Skip to main content link for keyboard users */}
       <a 
@@ -59,16 +60,16 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
+      <main id="main-content" className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full" role="main">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
           
           {/* Left Column: Inputs */}
           <section className="lg:col-span-4 lg:sticky lg:top-24 transition-all" aria-labelledby="input-section-heading">
             <h2 id="input-section-heading" className="sr-only">Parametry kredytu</h2>
             <InputSection inputs={inputs} setInputs={setInputs} />
-            <div className="mt-6 text-center lg:text-left" role="note" aria-label="Informacja prawna">
+            <div className="mt-6 text-center lg:text-left hidden lg:block" role="note" aria-label="Informacja prawna">
                <p className="text-xs text-slate-400">
-                <span className="font-bold">Nota prawna:</span> Wyniki są symulacją matematyczną i mogą nieznacznie różnić się od wyliczeń banku ze względu na dni księgowania, lata przestępne czy zmienne stopy procentowe (WIBOR/WIRON).
+                <span className="font-bold">Nota prawna:</span> Wyniki są symulacją matematyczną i mogą nieznacznie różnić się od wyliczeń banku.
                </p>
             </div>
           </section>
@@ -82,8 +83,10 @@ const App: React.FC = () => {
         </div>
       </main>
 
+      <Footer />
+
       {/* Floating CTA - Mobile Only mostly, but nice to have accessible */}
-      <div className="fixed bottom-6 left-0 right-0 px-4 flex justify-center z-40 pointer-events-none" role="navigation" aria-label="Szybka nawigacja">
+      <div className="fixed bottom-6 left-0 right-0 px-4 flex justify-center z-40 pointer-events-none lg:hidden" role="navigation" aria-label="Szybka nawigacja">
         <button 
           className="pointer-events-auto bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-slate-200 text-white dark:text-slate-900 font-medium py-3.5 px-6 rounded-full shadow-2xl shadow-slate-900/40 dark:shadow-slate-950/60 transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2 group backdrop-blur-sm focus:outline-none focus:ring-4 focus:ring-sky-500 focus:ring-offset-2"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
