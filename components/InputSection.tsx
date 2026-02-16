@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId } from 'react';
 import { InputState, StrategyType } from '../types';
 
 interface Props {
@@ -26,6 +26,8 @@ const SmartInput: React.FC<SmartInputProps> = ({
   onValidationError,
   ...props 
 }) => {
+  const inputId = useId();
+  const errorId = `${inputId}-error`;
   const [localValue, setLocalValue] = useState<string>(value.toString());
   const [isFocused, setIsFocused] = useState(false);
   const [error, setError] = useState<string>('');
@@ -88,6 +90,7 @@ const SmartInput: React.FC<SmartInputProps> = ({
     <div>
       <div className={`relative transition-all duration-200 rounded-xl border ${borderColor}`}>
           <input
+              id={inputId}
               {...props}
               value={localValue}
               onChange={handleChange}
@@ -96,15 +99,15 @@ const SmartInput: React.FC<SmartInputProps> = ({
               className="block px-4 pb-2.5 pt-6 w-full text-lg font-bold text-slate-900 dark:text-slate-100 bg-transparent rounded-xl appearance-none focus:outline-none focus:ring-0 peer"
               placeholder=" "
               aria-invalid={hasError}
-              aria-describedby={hasError ? `${label}-error` : undefined}
+              aria-describedby={hasError ? errorId : undefined}
           />
-          <label className={`absolute text-sm font-semibold duration-200 transform -translate-y-3 scale-75 top-4 left-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-slate-500 dark:peer-placeholder-shown:text-slate-400 peer-focus:scale-75 peer-focus:-translate-y-3 ${hasError ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-400 peer-focus:text-sky-600 dark:peer-focus:text-sky-400'}`}>
+          <label htmlFor={inputId} className={`absolute text-sm font-semibold duration-200 transform -translate-y-3 scale-75 top-4 left-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-slate-500 dark:peer-placeholder-shown:text-slate-400 peer-focus:scale-75 peer-focus:-translate-y-3 ${hasError ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-400 peer-focus:text-sky-600 dark:peer-focus:text-sky-400'}`}>
               {label}
           </label>
       </div>
       {hasError && (
         <p 
-          id={`${label}-error`}
+          id={errorId}
           className="text-xs text-red-600 dark:text-red-400 mt-1.5 ml-1 flex items-center gap-1 animate-in fade-in slide-in-from-top-1 duration-200"
           role="alert"
         >
@@ -120,11 +123,15 @@ const StepperControl: React.FC<{
   onDecrement: () => void;
   onIncrement: () => void;
   children: React.ReactNode;
-}> = ({ onDecrement, onIncrement, children }) => {
+  label?: string;
+}> = ({ onDecrement, onIncrement, children, label }) => {
+  const labelSuffix = label ? ` ${label}` : ' wartość';
   return (
     <div className="flex items-center gap-1">
       <button 
+        type="button"
         onClick={onDecrement}
+        aria-label={`Zmniejsz${labelSuffix}`}
         className="w-10 h-[62px] flex items-center justify-center bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all active:scale-95"
       >
         <span className="material-symbols-rounded">remove</span>
@@ -135,7 +142,9 @@ const StepperControl: React.FC<{
       </div>
 
       <button 
+        type="button"
         onClick={onIncrement}
+        aria-label={`Zwiększ${labelSuffix}`}
         className="w-10 h-[62px] flex items-center justify-center bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all active:scale-95"
       >
         <span className="material-symbols-rounded">add</span>
@@ -257,6 +266,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
         <StepperControl
             onDecrement={() => incrementValue('interestRate', -0.25)}
             onIncrement={() => incrementValue('interestRate', 0.25)}
+            label="oprocentowanie"
         >
             <SmartInput
                 type="number"
@@ -273,6 +283,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
             <StepperControl
                 onDecrement={() => incrementValue('monthsRemaining', -1)}
                 onIncrement={() => incrementValue('monthsRemaining', 1)}
+                label="liczbę rat"
             >
                 <SmartInput
                     type="number"
@@ -294,8 +305,8 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
       <hr className="border-slate-100" />
 
       {/* Strategy Selector */}
-      <div>
-        <label className="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-wide mb-3 block px-1">Strategia nadpłacania</label>
+      <div role="radiogroup" aria-labelledby="strategy-label">
+        <label id="strategy-label" className="text-xs font-bold text-slate-400 dark:text-slate-400 uppercase tracking-wide mb-3 block px-1">Strategia nadpłacania</label>
         <div className="flex flex-col gap-3">
           {[StrategyType.SHORTEN_TERM, StrategyType.LOWER_INSTALLMENT, StrategyType.SMART_SNOWBALL].map((strat) => {
              const isSelected = inputs.strategy === strat;
@@ -306,8 +317,17 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
              return (
                 <div
                     key={strat}
+                    role="radio"
+                    aria-checked={isSelected}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === ' ' || e.key === 'Enter') {
+                        e.preventDefault();
+                        handleChange('strategy', strat);
+                      }
+                    }}
                     onClick={() => handleChange('strategy', strat)}
-                    className={`relative rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden
+                    className={`relative rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-slate-800
                     ${isSelected 
                         ? 'bg-white dark:bg-slate-700 border-emerald-500 dark:border-emerald-400 ring-1 ring-emerald-500 dark:ring-emerald-400 shadow-lg scale-[1.02] z-10' 
                         : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700/50'}`}
