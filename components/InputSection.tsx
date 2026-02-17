@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId } from 'react';
 import { InputState, StrategyType } from '../types';
 
 interface Props {
@@ -26,6 +26,9 @@ const SmartInput: React.FC<SmartInputProps> = ({
   onValidationError,
   ...props 
 }) => {
+  const generatedId = useId();
+  const inputId = props.id || generatedId;
+
   const [localValue, setLocalValue] = useState<string>(value.toString());
   const [isFocused, setIsFocused] = useState(false);
   const [error, setError] = useState<string>('');
@@ -89,6 +92,7 @@ const SmartInput: React.FC<SmartInputProps> = ({
       <div className={`relative transition-all duration-200 rounded-xl border ${borderColor}`}>
           <input
               {...props}
+              id={inputId}
               value={localValue}
               onChange={handleChange}
               onFocus={() => setIsFocused(true)}
@@ -98,7 +102,10 @@ const SmartInput: React.FC<SmartInputProps> = ({
               aria-invalid={hasError}
               aria-describedby={hasError ? `${label}-error` : undefined}
           />
-          <label className={`absolute text-sm font-semibold duration-200 transform -translate-y-3 scale-75 top-4 left-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-slate-500 dark:peer-placeholder-shown:text-slate-400 peer-focus:scale-75 peer-focus:-translate-y-3 ${hasError ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-400 peer-focus:text-sky-600 dark:peer-focus:text-sky-400'}`}>
+          <label
+              htmlFor={inputId}
+              className={`absolute text-sm font-semibold duration-200 transform -translate-y-3 scale-75 top-4 left-4 z-10 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-slate-500 dark:peer-placeholder-shown:text-slate-400 peer-focus:scale-75 peer-focus:-translate-y-3 ${hasError ? 'text-red-600 dark:text-red-400' : 'text-slate-500 dark:text-slate-400 peer-focus:text-sky-600 dark:peer-focus:text-sky-400'}`}
+          >
               {label}
           </label>
       </div>
@@ -120,11 +127,14 @@ const StepperControl: React.FC<{
   onDecrement: () => void;
   onIncrement: () => void;
   children: React.ReactNode;
-}> = ({ onDecrement, onIncrement, children }) => {
+  label?: string;
+}> = ({ onDecrement, onIncrement, children, label }) => {
   return (
     <div className="flex items-center gap-1">
       <button 
+        type="button"
         onClick={onDecrement}
+        aria-label={label ? `Zmniejsz ${label}` : "Zmniejsz wartość"}
         className="w-10 h-[62px] flex items-center justify-center bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all active:scale-95"
       >
         <span className="material-symbols-rounded">remove</span>
@@ -135,7 +145,9 @@ const StepperControl: React.FC<{
       </div>
 
       <button 
+        type="button"
         onClick={onIncrement}
+        aria-label={label ? `Zwiększ ${label}` : "Zwiększ wartość"}
         className="w-10 h-[62px] flex items-center justify-center bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all active:scale-95"
       >
         <span className="material-symbols-rounded">add</span>
@@ -154,6 +166,7 @@ const PresetOptions: React.FC<{
     <div className="flex flex-wrap gap-2 mt-2 px-1">
       {options.map((opt) => (
         <button
+          type="button"
           key={opt.label}
           onClick={() => onSelect(opt.value)}
           className={`text-[11px] px-3 py-1.5 rounded-lg font-semibold transition-all duration-200 border
@@ -255,6 +268,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
         />
 
         <StepperControl
+            label="Oprocentowanie"
             onDecrement={() => incrementValue('interestRate', -0.25)}
             onIncrement={() => incrementValue('interestRate', 0.25)}
         >
@@ -271,6 +285,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
 
         <div>
             <StepperControl
+                label="Pozostało rat"
                 onDecrement={() => incrementValue('monthsRemaining', -1)}
                 onIncrement={() => incrementValue('monthsRemaining', 1)}
             >
@@ -306,7 +321,16 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
              return (
                 <div
                     key={strat}
+                    role="button"
+                    tabIndex={0}
+                    aria-pressed={isSelected}
                     onClick={() => handleChange('strategy', strat)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleChange('strategy', strat);
+                        }
+                    }}
                     className={`relative rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden
                     ${isSelected 
                         ? 'bg-white dark:bg-slate-700 border-emerald-500 dark:border-emerald-400 ring-1 ring-emerald-500 dark:ring-emerald-400 shadow-lg scale-[1.02] z-10' 
