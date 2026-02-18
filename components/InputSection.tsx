@@ -120,11 +120,13 @@ const StepperControl: React.FC<{
   onDecrement: () => void;
   onIncrement: () => void;
   children: React.ReactNode;
-}> = ({ onDecrement, onIncrement, children }) => {
+  label?: string;
+}> = ({ onDecrement, onIncrement, children, label }) => {
   return (
     <div className="flex items-center gap-1">
       <button 
         onClick={onDecrement}
+        aria-label={label ? `Zmniejsz ${label}` : 'Zmniejsz wartość'}
         className="w-10 h-[62px] flex items-center justify-center bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all active:scale-95"
       >
         <span className="material-symbols-rounded">remove</span>
@@ -136,6 +138,7 @@ const StepperControl: React.FC<{
 
       <button 
         onClick={onIncrement}
+        aria-label={label ? `Zwiększ ${label}` : 'Zwiększ wartość'}
         className="w-10 h-[62px] flex items-center justify-center bg-slate-50 dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 rounded-xl text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-all active:scale-95"
       >
         <span className="material-symbols-rounded">add</span>
@@ -257,6 +260,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
         <StepperControl
             onDecrement={() => incrementValue('interestRate', -0.25)}
             onIncrement={() => incrementValue('interestRate', 0.25)}
+            label="oprocentowanie"
         >
             <SmartInput
                 type="number"
@@ -273,6 +277,7 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
             <StepperControl
                 onDecrement={() => incrementValue('monthsRemaining', -1)}
                 onIncrement={() => incrementValue('monthsRemaining', 1)}
+                label="liczbę rat"
             >
                 <SmartInput
                     type="number"
@@ -307,7 +312,16 @@ const InputSection: React.FC<Props> = ({ inputs, setInputs }) => {
                 <div
                     key={strat}
                     onClick={() => handleChange('strategy', strat)}
-                    className={`relative rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden
+                    role="button"
+                    tabIndex={0}
+                    aria-pressed={isSelected}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleChange('strategy', strat);
+                      }
+                    }}
+                    className={`relative rounded-xl border transition-all duration-300 cursor-pointer overflow-hidden focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none focus-visible:ring-emerald-500
                     ${isSelected 
                         ? 'bg-white dark:bg-slate-700 border-emerald-500 dark:border-emerald-400 ring-1 ring-emerald-500 dark:ring-emerald-400 shadow-lg scale-[1.02] z-10' 
                         : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-600 hover:border-slate-300 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700/50'}`}
