@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { CalculationResult, StrategyType } from "../types";
+import { formatCurrency } from "../utils/formatters";
 import {
   BalanceChart,
   CostComparisonChart,
@@ -31,22 +32,6 @@ const ResultsDashboard: React.FC<Props> = ({
   const monthsSaved = results.totalMonthsStandard - results.totalMonthsStrategy;
   const yearsSaved = Math.floor(monthsSaved / 12);
   const remainingMonthsSaved = monthsSaved % 12;
-
-  // Memoize the formatter instance to avoid recreating it on every render
-  const currencyFormatter = useMemo(
-    () =>
-      new Intl.NumberFormat("pl-PL", {
-        style: "currency",
-        currency: "PLN",
-        maximumFractionDigits: 0,
-      }),
-    [],
-  );
-
-  const formatCurrency = useCallback(
-    (val: number) => currencyFormatter.format(val),
-    [currencyFormatter],
-  );
 
   const getFutureDate = useCallback((monthsToAdd: number) => {
     const date = new Date();
